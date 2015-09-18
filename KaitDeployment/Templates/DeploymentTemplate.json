@@ -1,0 +1,120 @@
+﻿{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "HDInsightStorageName": {
+            "type": "string"
+        },
+        "HDInsightStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "HDInsightStorageLocation": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ]
+        },
+        "DataStorageName": {
+            "type": "string"
+        },
+        "DataStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "DataStorageLocation": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ]
+        },
+        "StreamAnalyticsMonitoringStorageName": {
+            "type": "string"
+        },
+        "StreamAnalyticsMonitoringStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "StreamAnalyticsMonitoringStorageLocation": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ]
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('HDInsightStorageName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[parameters('HDInsightStorageLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "HDInsightStorage"
+            },
+            "properties": {
+                "accountType": "[parameters('HDInsightStorageType')]"
+            }
+        },
+        {
+            "name": "[parameters('DataStorageName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[parameters('DataStorageLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "DataStorage"
+            },
+            "properties": {
+                "accountType": "[parameters('DataStorageType')]"
+            }
+        },
+        {
+            "name": "[parameters('StreamAnalyticsMonitoringStorageName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[parameters('StreamAnalyticsMonitoringStorageLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "StreamAnalyticsMonitoringStorage"
+            },
+            "properties": {
+                "accountType": "[parameters('StreamAnalyticsMonitoringStorageType')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
