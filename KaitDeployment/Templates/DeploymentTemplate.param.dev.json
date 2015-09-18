@@ -2,5 +2,32 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "DeploymentLocation": {
+            "value": "Central US"
+        },
+        "HDInsightStorageName": {
+            "value": "kaithdistorage"
+        },
+        "HDInsightStorageContainer": {
+            "value": "hdidata"
+        },
+        "DataStorageName": {
+            "value": "kaitdata"
+        },
+        "StreamAnalyticsMonitoringStorageName": {
+            "value": "kaitasastorage"
+        },
+        "HDInsightName": {
+            "value": "kaithdi"
+        },
+        "HDInsightAdminUser": {
+            "value": "admin"
+        },
+        "HDInsightAdminPassword": {
+            "value": "Password.1"
+        },
+        "HDInsightWorkerNodes": {
+            "value": 1
+        }
     }
 }

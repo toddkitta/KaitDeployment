@@ -1,120 +1,163 @@
 ﻿{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "HDInsightStorageName": {
-            "type": "string"
-        },
-        "HDInsightStorageType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS"
-            ]
-        },
-        "HDInsightStorageLocation": {
-            "type": "string",
-            "defaultValue": "West US",
-            "allowedValues": [
-                "East US",
-                "West US",
-                "West Europe",
-                "East Asia",
-                "South East Asia"
-            ]
-        },
-        "DataStorageName": {
-            "type": "string"
-        },
-        "DataStorageType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS"
-            ]
-        },
-        "DataStorageLocation": {
-            "type": "string",
-            "defaultValue": "West US",
-            "allowedValues": [
-                "East US",
-                "West US",
-                "West Europe",
-                "East Asia",
-                "South East Asia"
-            ]
-        },
-        "StreamAnalyticsMonitoringStorageName": {
-            "type": "string"
-        },
-        "StreamAnalyticsMonitoringStorageType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS"
-            ]
-        },
-        "StreamAnalyticsMonitoringStorageLocation": {
-            "type": "string",
-            "defaultValue": "West US",
-            "allowedValues": [
-                "East US",
-                "West US",
-                "West Europe",
-                "East Asia",
-                "South East Asia"
-            ]
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "DeploymentLocation": {
+      "type": "string",
+      "defaultValue": "West US",
+      "allowedValues": [
+        "East US",
+        "West US",
+        "West Europe",
+        "East Asia",
+        "South East Asia",
+        "Central US"
+      ]
     },
-    "variables": {
+    "HDInsightStorageName": {
+      "type": "string"
     },
-    "resources": [
-        {
-            "name": "[parameters('HDInsightStorageName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "location": "[parameters('HDInsightStorageLocation')]",
-            "apiVersion": "2015-05-01-preview",
-            "dependsOn": [ ],
-            "tags": {
-                "displayName": "HDInsightStorage"
-            },
-            "properties": {
-                "accountType": "[parameters('HDInsightStorageType')]"
-            }
-        },
-        {
-            "name": "[parameters('DataStorageName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "location": "[parameters('DataStorageLocation')]",
-            "apiVersion": "2015-05-01-preview",
-            "dependsOn": [ ],
-            "tags": {
-                "displayName": "DataStorage"
-            },
-            "properties": {
-                "accountType": "[parameters('DataStorageType')]"
-            }
-        },
-        {
-            "name": "[parameters('StreamAnalyticsMonitoringStorageName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "location": "[parameters('StreamAnalyticsMonitoringStorageLocation')]",
-            "apiVersion": "2015-05-01-preview",
-            "dependsOn": [ ],
-            "tags": {
-                "displayName": "StreamAnalyticsMonitoringStorage"
-            },
-            "properties": {
-                "accountType": "[parameters('StreamAnalyticsMonitoringStorageType')]"
-            }
-        }
-    ],
-    "outputs": {
+    "HDInsightStorageContainer": {
+      "type": "string"
+    },
+    "HDInsightStorageType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS"
+      ]
+    },
+    "DataStorageName": {
+      "type": "string"
+    },
+    "DataStorageType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS"
+      ]
+    },
+    "StreamAnalyticsMonitoringStorageName": {
+      "type": "string"
+    },
+    "StreamAnalyticsMonitoringStorageType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS"
+      ]
+    },
+    "HDInsightName": {
+      "type": "string"
+    },
+    "HDInsightAdminUser": {
+      "type": "string"
+    },
+    "HDInsightAdminPassword": {
+      "type": "string"
+    },
+    "HDInsightWorkerNodes": {
+      "type": "int"
     }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "name": "[parameters('HDInsightStorageName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[parameters('DeploymentLocation')]",
+      "apiVersion": "2015-05-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "HDInsightStorage"
+      },
+      "properties": {
+        "accountType": "[parameters('HDInsightStorageType')]"
+      }
+    },
+    {
+      "name": "[parameters('DataStorageName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[parameters('DeploymentLocation')]",
+      "apiVersion": "2015-05-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "DataStorage"
+      },
+      "properties": {
+        "accountType": "[parameters('DataStorageType')]"
+      }
+    },
+    {
+      "name": "[parameters('StreamAnalyticsMonitoringStorageName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[parameters('DeploymentLocation')]",
+      "apiVersion": "2015-05-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "StreamAnalyticsMonitoringStorage"
+      },
+      "properties": {
+        "accountType": "[parameters('StreamAnalyticsMonitoringStorageType')]"
+      }
+    },
+    {
+      "name": "[parameters('HDInsightName')]",
+      "type": "Microsoft.HDInsight",
+      "apiVersion": "2015-03-01-preview",
+      "location": "[parameters('DeploymentLocation')]",
+      "properties": {
+        "clusterVersion": "3.2",
+        "osType": "Windows",
+        "clusterDefinition": {
+          "kind": "Hadoop",
+          "configurations": {
+            "core-site": {
+              "fs.defaultFS": "[concat('wasb://', concat(parameters('HDInsightStorageContainer'), concat('@', concat([parameters('HDInsightStorageName')], '.blob.core.windows.net'))))]",
+              //"fs.azure.account.key.kittahdi.blob.core.windows.net": "X/Fsj9JO8vMcNEa7T3UN+9PVkgu5fPWxRwyHERHkRJwrRbpkIpn/4Sv2duqSZLv+0bRp+1VUhgGqpYjDrz30AQ=="
+              "[concat('fs.azure.account.key.', concat([parameters('HDInsightStorageName')], '.blob.core.windows.net'))]": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('HDInsightStorageName')), '2015-05-01-preview').key1]"
+            },
+            "gateway": {
+              "restAuthCredential.isEnabled": "true",
+              "restAuthCredential.username": "[parameters('HDInsightAdminUser')]",
+              "restAuthCredential.password": "[parameters('HDInsightAdminPassword')]"
+            }
+          }
+        },
+        "computeProfile": {
+          "roles": [
+            {
+              "name": "headnode",
+              "targetInstanceCount": 2,
+              "hardwareProfile": {
+                "vmSize": "Standard_D12"
+              },
+              "osProfile": {
+                "windowsOperatingSystemProfile": { }
+              }
+            },
+            {
+              "name": "workernode",
+              "targetInstanceCount": "[parameters('HDInsightWorkerNodes')]",
+              "hardwareProfile": {
+                "vmSize": "Standard_D12"
+              },
+              "osProfile": {
+                "windowsOperatingSystemProfile": { }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
 }
