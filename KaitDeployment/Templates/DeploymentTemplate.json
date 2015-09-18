@@ -110,7 +110,7 @@
     },
     {
       "name": "[parameters('HDInsightName')]",
-      "type": "Microsoft.HDInsight",
+      "type": "Microsoft.HDInsight/clusters",
       "apiVersion": "2015-03-01-preview",
       "location": "[parameters('DeploymentLocation')]",
       "properties": {
