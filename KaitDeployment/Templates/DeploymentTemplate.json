@@ -64,7 +64,38 @@
     },
     "HDInsightWorkerNodes": {
       "type": "int"
+    },
+    "EventHubNamespace": {
+      "type": "string"
+    },
+    "InteractionsEventHub": {
+      "type": "string"
+    },
+    "InteractionsEventHubPartitions": {
+      "type": "int"
+    },
+    "InteractionsConsumerGroup": {
+      "type": "string"
+    },
+    "DemographicsEventHub": {
+      "type": "string"
+    },
+    "DemographicsEventHubPartitions": {
+      "type": "int"
+    },
+    "DemographicsConsumerGroup": {
+      "type": "string"
+    },
+    "SkeletalEventHub": {
+      "type": "string"
+    },
+    "SkeletalEventHubPartitions": {
+      "type": "int"
+    },
+    "SkeletalConsumerGroup": {
+      "type": "string"
     }
+
   },
   "variables": {
   },
@@ -155,6 +186,93 @@
           ]
         }
       }
+    },
+
+    // event hubs
+    {
+      "apiVersion": "2014-09-01",
+      "name": "[parameters('EventHubNamespace')]",
+      "type": "Microsoft.EventHub/namespaces",
+      "location": "[parameters('DeploymentLocation')]",
+      "properties": {
+        "region": "[parameters('DeploymentLocation')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2014-09-01",
+          "name": "[parameters('InteractionsEventHub')]",
+          "type": "eventHubs",
+          "dependsOn": [
+            "[parameters('EventHubNamespace')]"
+          ],
+          "properties": {
+            "path": "[parameters('InteractionsEventHub')]",
+            "partitionCount": "[parameters('InteractionsEventHubPartitions')]"
+          },
+          "resources": [
+            {
+              "apiVersion": "2014-09-01",
+              "name": "[parameters('InteractionsConsumerGroup')]",
+              "type": "consumergroups",
+              "dependsOn": [
+                "[parameters('InteractionsEventHub')]"
+              ],
+              "properties": {
+                "enableCheckpoint": "false"
+              }
+            }
+          ]
+        },
+        {
+          "apiVersion": "2014-09-01",
+          "name": "[parameters('DemographicsEventHub')]",
+          "type": "eventHubs",
+          "dependsOn": [
+            "[parameters('EventHubNamespace')]"
+          ],
+          "properties": {
+            "path": "[parameters('DemographicsEventHub')]",
+            "partitionCount": "[parameters('DemographicsEventHubPartitions')]"
+          },
+          "resources": [
+            {
+              "apiVersion": "2014-09-01",
+              "name": "[parameters('DemographicsConsumerGroup')]",
+              "type": "consumergroups",
+              "dependsOn": [
+                "[parameters('DemographicsEventHub')]"
+              ],
+              "properties": {
+                "enableCheckpoint": "false"
+              }
+            }
+          ]
+        },
+        {
+          "apiVersion": "2014-09-01",
+          "name": "[parameters('SkeletalEventHub')]",
+          "type": "eventHubs",
+          "dependsOn": [
+            "[parameters('EventHubNamespace')]"
+          ],
+          "properties": {
+            "path": "[parameters('SkeletalEventHub')]",
+            "partitionCount": "[parameters('SkeletalEventHubPartitions')]"
+          },
+          "resources": [
+            {
+              "apiVersion": "2014-09-01",
+              "name": "[parameters('SkeletalConsumerGroup')]",
+              "type": "consumergroups",
+              "dependsOn": [
+                "[parameters('SkeletalEventHub')]"
+              ],
+              "properties": {
+                "enableCheckpoint": "false"
+              }
+            }
+          ]
+        }
     }
   ],
   "outputs": {
