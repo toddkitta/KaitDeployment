@@ -120,9 +120,8 @@
           "kind": "Hadoop",
           "configurations": {
             "core-site": {
-              "fs.defaultFS": "[concat('wasb://', concat(parameters('HDInsightStorageContainer'), concat('@', concat([parameters('HDInsightStorageName')], '.blob.core.windows.net'))))]",
-              //"fs.azure.account.key.kittahdi.blob.core.windows.net": "X/Fsj9JO8vMcNEa7T3UN+9PVkgu5fPWxRwyHERHkRJwrRbpkIpn/4Sv2duqSZLv+0bRp+1VUhgGqpYjDrz30AQ=="
-              "[concat('fs.azure.account.key.', concat([parameters('HDInsightStorageName')], '.blob.core.windows.net'))]": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('HDInsightStorageName')), '2015-05-01-preview').key1]"
+              "fs.defaultFS": "[concat('wasb://', concat(parameters('HDInsightStorageContainer'), concat('@', concat(parameters('HDInsightStorageName'), '.blob.core.windows.net'))))]",
+              "[concat('fs.azure.account.key.', concat(parameters('HDInsightStorageName'), '.blob.core.windows.net'))]": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('HDInsightStorageName')), '2015-05-01-preview').key1]"
             },
             "gateway": {
               "restAuthCredential.isEnabled": "true",

@@ -6,19 +6,19 @@
             "value": "Central US"
         },
         "HDInsightStorageName": {
-            "value": "kaithdistorage"
+            "value": "kittakaithdi"
         },
         "HDInsightStorageContainer": {
             "value": "hdidata"
         },
         "DataStorageName": {
-            "value": "kaitdata"
+            "value": "kittakaitdata"
         },
         "StreamAnalyticsMonitoringStorageName": {
-            "value": "kaitasastorage"
+            "value": "kittakaitasastorage"
         },
         "HDInsightName": {
-            "value": "kaithdi"
+            "value": "kittakaithdi"
         },
         "HDInsightAdminUser": {
             "value": "admin"
