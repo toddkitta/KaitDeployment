@@ -101,6 +101,15 @@
     "SkeletalConsumerGroup": {
       "type": "string"
     }
+    "InteractionsNotificationsEventHub": {
+      "type": "string"
+    },
+    "InteractionsNotificationsEventHubPartitions": {
+      "type": "int"
+    },
+    "InteractionsNotificationsConsumerGroup": {
+      "type": "string"
+    }
 
     // stream analytics
     "StreamAnalyticsJobName": { "type": "string" }
@@ -287,9 +296,34 @@
               }
             }
           ]
+        },
+        {
+          "apiVersion": "2014-09-01",
+          "name": "[parameters('InteractionsNotificationsEventHub')]",
+          "type": "eventHubs",
+          "dependsOn": [
+            "[parameters('EventHubNamespace')]"
+          ],
+          "properties": {
+            "path": "[parameters('InteractionsNotificationsEventHub')]",
+            "partitionCount": "[parameters('InteractionsNotificationsEventHubPartitions')]"
+          },
+          "resources": [
+            {
+              "apiVersion": "2014-09-01",
+              "name": "[parameters('InteractionsNotificationsConsumerGroup')]",
+              "type": "consumergroups",
+              "dependsOn": [
+                "[parameters('InteractionsNotificationsEventHub')]"
+              ],
+              "properties": {
+                "enableCheckpoint": "false"
+              }
+            }
+          ]
         }
       ]
-    }
+    },
 
     // stream analytics
     {
@@ -500,9 +534,7 @@
                 "type": "Microsoft.ServiceBus/EventHub",
                 "properties": {
                   "serviceBusNamespace": "[parameters('EventHubNamespace')]",
-
-                  // TODO: add this event hub
-                  "eventHubName": "interactionsnotifications",
+                  "eventHubName": "[parameters('InteractionsNotificationsEventHub')]",
 
                   // TODO: get policies
                   "sharedAccessPolicyName": "",
@@ -523,57 +555,32 @@
           "name": "ProcessTelemetryData",
           "properties": {
             "streamingUnits": 3,
-            "query": "SELECT * INTO [skeletalout] FROM [skeletalin];
-            SELECT *
-            INTO [ interactionsout ]
-            FROM [ interactionsin ]
-            TIMESTAMP BY
-            [ TimeStamp ]
-            ; SELECT
-            * INTO
-            [ demographicsout ]
-            FROM [ demographicsin ]
-            ; SELECT
-            DateAdd(minute,
-            -2,
-            System.TimeStamp) AS
-            WindowStart,
-            System.TimeStamp AS
-            WindowEnd,
-            TrackingID,
-            COUNT(*) INTO
-            [ dwellnotificationsout ]
-            FROM [ interactionsin ]
-            TIMESTAMP BY
-            [ TimeStamp ]
-            WHERE InteractionZone
-            = 'ActiveEngage'
-            GROUP BY
-            TrackingID,
-            TumblingWindow(minute,
-            2) HAVING
-            COUNT(*) >
-            3; SELECT
-            DateAdd(minute,
-            -2,
-            System.TimeStamp) AS
-            WindowStart,
-            System.TimeStamp AS
-            WindowEnd,
-            TrackingID,
-            COUNT(*) INTO
-            [ dwellnotificationsouteh ]
-            FROM [ interactionsin ]
-            TIMESTAMP BY
-            [ TimeStamp ]
-            WHERE InteractionZone
-            = 'ActiveEngage'
-            GROUP BY
-            TrackingID,
-            TumblingWindow(minute,
-            2) HAVING
-            COUNT(*) >
-            3;"
+            "query": "
+SELECT *
+INTO [skeletalout]
+FROM [skeletalin];
+
+SELECT *
+INTO [interactionsout]
+FROM [interactionsin] TIMESTAMP BY [TimeStamp];
+
+SELECT *
+INTO [demographicsout]
+FROM [demographicsin];
+
+SELECT DateAdd(minute, -2, System.TimeStamp) AS WindowStart, System.TimeStamp AS WindowEnd, TrackingID, COUNT(*)
+INTO [dwellnotificationsout]
+FROM [interactionsin] TIMESTAMP BY [TimeStamp]
+WHERE InteractionZone = 'ActiveEngage'
+GROUP BY TrackingID, TumblingWindow(minute, 2)
+HAVING COUNT(*) > 3;
+
+SELECT DateAdd(minute, -2, System.TimeStamp) AS WindowStart, System.TimeStamp AS WindowEnd, TrackingID, COUNT(*)
+INTO [dwellnotificationsouteh]
+FROM [interactionsin] TIMESTAMP BY [TimeStamp]
+WHERE InteractionZone = 'ActiveEngage'
+GROUP BY TrackingID, TumblingWindow(minute, 2)
+HAVING COUNT(*) > 3;"
           }
         }
       }
